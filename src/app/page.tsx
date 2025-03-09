@@ -8,7 +8,7 @@ import theme from '../styles/theme';
 const HomeContainer = styled.div`
   text-align: center;
   padding: 6rem 2rem;
-  min-height: 100vh;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,18 +97,7 @@ export default function Home() {
       <ButtonContainer>
         <Button href="/recipes">📖 כל המתכונים</Button>
         <Button href="/upload">⬆️ העלאת מתכון</Button>
-        <Button href="/about">ℹ️ מידע נוסף</Button>
       </ButtonContainer>
-
-      {/* <FeaturesSection>
-        <FeaturesTitle>✨ למה להשתמש באספן המתכונים?</FeaturesTitle>
-        <FeaturesList>
-          <li>✅ ממשק מודרני ופשוט לשימוש</li>
-          <li>✅ העלאת ושיתוף מתכונים בקלות</li>
-          <li>✅ שמירה על כל המתכונים שלך במקום אחד</li>
-          <li>✅ גישה נוחה מכל מכשיר (מותאם לניידים!)</li>
-        </FeaturesList>
-      </FeaturesSection> */}
     </HomeContainer>
   );
 }

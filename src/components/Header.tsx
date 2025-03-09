@@ -36,6 +36,7 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: center;
   flex: 2;
+  justify-content: flex-start;
 `;
 
 const NavLinks = styled.div<{ open: boolean }>`
@@ -55,29 +56,30 @@ const NavLinks = styled.div<{ open: boolean }>`
     flex-direction: column;
     position: absolute;
     top: 60px;
-    right: ${({ open }) => (open ? '0' : '-100%')};
+    left: 0; /* שינוי מ-right: 0 */
     background-color: #222;
     width: 200px;
     padding: 1rem;
-    transition: right 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    transform: ${({ open }) =>
+      open ? 'translateX(0)' : 'translateX(-100%)'}; /* שינוי translateX */
+    z-index: 1000;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2); /* שינוי הצללה כדי שתהיה בצד שמאל */
   }
-`;
-
-const LeftNav = styled.div`
-  flex: 1;
-  text-align: left;
 `;
 
 const Burger = styled.div`
   display: none;
   flex-direction: column;
   cursor: pointer;
+  z-index: 1100; // Ensure it stays above the navbar
 
   span {
     background: white;
     height: 3px;
     width: 25px;
     margin: 3px;
+    transition: all 0.3s ease-in-out;
   }
 
   @media (max-width: 768px) {
@@ -95,19 +97,25 @@ const Header = () => {
       </Logo>
       <NavContainer>
         <NavLinks open={open}>
-          <Link href="/">בית</Link>
-          <Link href="/recipes">כל המתכונים</Link>
-          <Link href="/upload">העלאת מתכון</Link>
+          <Link href="/" onClick={() => setOpen(false)}>
+            בית
+          </Link>
+          <Link href="/recipes" onClick={() => setOpen(false)}>
+            כל המתכונים
+          </Link>
+          <Link href="/upload" onClick={() => setOpen(false)}>
+            העלאת מתכון
+          </Link>
         </NavLinks>
       </NavContainer>
-      <LeftNav>
-        <Link href="/about">אודות</Link>
-      </LeftNav>
       <Burger onClick={() => setOpen(!open)}>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <span
+          style={{ transform: open ? 'rotate(45deg) translate(5px, 5px)' : 'none' }}
+        ></span>
+        <span style={{ opacity: open ? 0 : 1 }}></span>
+        <span
+          style={{ transform: open ? 'rotate(-45deg) translate(5px, -5px)' : 'none' }}
+        ></span>
       </Burger>
       <Placeholder />
     </Navbar>

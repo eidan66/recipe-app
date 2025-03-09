@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
+import Icon404 from '@/assets/svg/404.svg';
+
 // 🎨 עיצוב הכרטיסייה
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.surface};
@@ -12,6 +14,7 @@ const Card = styled.div`
   padding: ${({ theme }) => theme.spacing.medium};
   text-align: center;
   width: 400px;
+  height: 670px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
 
@@ -110,7 +113,11 @@ export default function RecipeCard({
 
   return (
     <Card theme={theme}>
-      <RecipeImage src={image} alt={title} />
+      {image && image.trim() !== '' ? (
+        <RecipeImage src={image} alt={title} />
+      ) : (
+        <Icon404 style={{ width: '100%', height: '250px' }} />
+      )}
       <Title theme={theme}>{title}</Title>
       <Description theme={theme}>{description}</Description>
       <Info theme={theme}>
