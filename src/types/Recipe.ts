@@ -1,12 +1,4 @@
-export interface Ingredient {
-  section: string;
-  items: string[];
-}
-
-export interface Instruction {
-  section: string;
-  steps: string[];
-}
+// Removed Ingredient and Instruction interfaces in favor of dynamic key objects
 
 export interface Recipe {
   id: string;
@@ -16,8 +8,16 @@ export interface Recipe {
   prepTime: number;
   cookTime: number;
   servings: number;
-  ingredients: Ingredient[]; // רשימת קטגוריות עם רשימות מרכיבים
-  instructions: Instruction[]; // רשימת קטגוריות עם שלבי הכנה
-  tips?: string[];
-  tags: string[];
+  ingredients: { [section: string]: string[] }; // מפתחות דינמיים עם רשימת מרכיבים
+  instructions: { [section: string]: string[] }; // מפתחות דינמיים עם שלבי הכנה
+  tips?: string[]; // טיפים לשדרוג
+  tags: string[]; // תגיות מתכון
+  category?: string; // קטגוריית מתכון כללית (למשל 'איטלקי', 'קיטוגני')
+  allergens?: string[]; // רשימת אלרגנים פוטנציאליים
+  nutrition?: {
+    calories?: number;
+    protein?: number;
+    fat?: number;
+    carbs?: number;
+  }; // ערכים תזונתיים אופציונליים
 }
