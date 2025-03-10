@@ -6,6 +6,8 @@ import FileUpload from './components/FileUpload';
 import PasteJson from './components/PasteJson';
 import RecipeForm from './components/RecipeForm';
 import { Recipe } from '@/types/Recipe';
+//TODO: Fix this later
+// import FreeTextToRecipe from '@/components/FreeTextToRecipe';
 
 const UploadContainer = styled.div`
   text-align: center;
@@ -50,6 +52,10 @@ export default function UploadPage() {
       <Section>
         <PasteJson onPaste={handleNewRecipes} />
       </Section>
+      {/* //TODO: Fix this later
+      <Section>
+        <FreeTextToRecipe />
+      </Section> */}
 
       <Section>
         <RecipeForm onAdd={handleNewRecipes} />
