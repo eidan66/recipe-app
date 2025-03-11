@@ -58,34 +58,6 @@ const Button = styled(Link)`
   }
 `;
 
-// const FeaturesSection = styled.div`
-//   margin-top: 4rem;
-//   padding: 2rem;
-//   background: ${theme.colors.surface};
-//   border-radius: 15px;
-//   backdrop-filter: blur(12px);
-//   text-align: center;
-//   max-width: 850px;
-//   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-// `;
-
-// const FeaturesTitle = styled.h2`
-//   font-size: 2.2rem;
-//   margin-bottom: 1.5rem;
-//   color: ${theme.colors.textPrimary};
-//   font-weight: bold;
-// `;
-
-// const FeaturesList = styled.ul`
-//   list-style: none;
-//   padding: 0;
-//   color: ${theme.colors.textSecondary};
-//   font-size: 1.3rem;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-// `;
-
 export default function Home() {
   return (
     <HomeContainer>

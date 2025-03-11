@@ -1,8 +1,20 @@
 'use client';
 import { Recipe } from '@/types/Recipe';
-
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { gql, useMutation } from '@apollo/client';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// הגדרת ה-Mutation להוספת מתכון
+const ADD_RECIPE_MUTATION = gql`
+  mutation AddRecipe($recipe: RecipeInput!) {
+    addRecipe(recipe: $recipe) {
+      uuid
+      title
+    }
+  }
+`;
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -41,14 +53,75 @@ interface PasteJsonProps {
 
 export default function PasteJson({ onPaste }: PasteJsonProps) {
   const [jsonInput, setJsonInput] = useState('');
+  const [addRecipe, { loading, error }] = useMutation(ADD_RECIPE_MUTATION);
 
-  const handlePasteJson = () => {
+  const theme = useTheme();
+
+  const showToastSuccess = () => {
+    toast.success('המתכון הועלה בהצלחה!', {
+      position: 'top-right',
+      autoClose: 3000,
+      style: {
+        background: theme.colors.success,
+        color: theme.colors.onPrimary,
+        borderRadius: theme.borderRadius,
+      },
+    });
+  };
+
+  const showToastError = () => {
+    toast.error('הטקסט אינו בפורמט JSON תקין או שהעלאה נכשלה.', {
+      position: 'top-right',
+      autoClose: 4000,
+      style: {
+        background: theme.colors.error,
+        color: theme.colors.onError,
+        borderRadius: theme.borderRadius,
+      },
+    });
+  };
+
+  const handlePasteJson = async () => {
     try {
       const json = JSON.parse(jsonInput);
       const recipesArray = Array.isArray(json) ? json : [json];
+
+      console.log('idan - handlePasteJson recipesArray:', recipesArray);
+
+      for (const recipe of recipesArray) {
+        // Ensure consistency: if recipe has 'id', convert it to 'uuid'
+        if (recipe.id) {
+          recipe.uuid = recipe.id;
+          delete recipe.id;
+        }
+
+        await addRecipe({
+          variables: {
+            recipe: {
+              title: recipe.title,
+              description: recipe.description,
+              image: recipe.image,
+              tags: recipe.tags,
+              tips: recipe.tips,
+              servings: Number(recipe.servings),
+              prepTime: Number(recipe.prepTime),
+              cookTime: Number(recipe.cookTime),
+              ingredients: recipe.ingredients,
+              instructions: recipe.instructions,
+              category: recipe.category,
+              allergens: recipe.allergens,
+              nutrition: recipe.nutrition || {},
+            },
+          },
+        });
+      }
+
       onPaste(recipesArray);
-    } catch {
-      alert('❌ הטקסט אינו בפורמט JSON תקין.');
+      setJsonInput('');
+      showToastSuccess();
+    } catch (err) {
+      console.log('idan - handlePasteJson err:', err);
+      showToastError();
     }
   };
 
@@ -61,7 +134,10 @@ export default function PasteJson({ onPaste }: PasteJsonProps) {
         onChange={(e) => setJsonInput(e.target.value)}
       />
       <br />
-      <Button onClick={handlePasteJson}>📥 הוסף מהטקסט</Button>
+      <Button onClick={handlePasteJson} disabled={loading}>
+        📥 {loading ? 'מעלה מתכונים...' : 'הוסף מהטקסט'}
+      </Button>
+      {error && <p style={{ color: 'red' }}>⚠ שגיאה בהעלאת הנתונים.</p>}
     </div>
   );
 }
