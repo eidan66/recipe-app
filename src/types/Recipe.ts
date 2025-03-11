@@ -1,7 +1,7 @@
 // Removed Ingredient and Instruction interfaces in favor of dynamic key objects
 
 export interface Recipe {
-  id: string;
+  uuid: string;
   title: string;
   description: string;
   image: string;
