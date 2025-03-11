@@ -6,7 +6,7 @@ if (!MONGODB_URI) {
   throw new Error('⚠️ MONGODB_URI is missing from environment variables!');
 }
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+const cached = (global as any).mongoose || { conn: null, promise: null };
 
 async function connectToDatabase() {
   if (cached.conn) return cached.conn;

@@ -12,7 +12,7 @@ const Grid = styled.div`
 `;
 
 interface Recipe {
-  id: string;
+  uuid: string;
   title: string;
   description: string;
   image: string;
@@ -30,7 +30,7 @@ export default function RecipeList({ recipes }: RecipeListProps) {
   return (
     <Grid>
       {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} {...recipe} />
+        <RecipeCard key={recipe.uuid} {...recipe} />
       ))}
     </Grid>
   );

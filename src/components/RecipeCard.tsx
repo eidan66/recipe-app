@@ -89,7 +89,7 @@ const Button = styled(Link)`
 
 // 🎯 נתונים שמתקבלים
 interface RecipeCardProps {
-  id: string;
+  uuid: string;
   title: string;
   description: string;
   image: string;
@@ -100,7 +100,7 @@ interface RecipeCardProps {
 }
 
 export default function RecipeCard({
-  id,
+  uuid,
   title,
   description,
   image,
@@ -131,7 +131,7 @@ export default function RecipeCard({
           </Tag>
         ))}
       </TagsContainer>
-      <Button href={`/recipe/${id}`} theme={theme}>
+      <Button href={`/recipe/${uuid}`} theme={theme}>
         📖 למתכון המלא
       </Button>
     </Card>
