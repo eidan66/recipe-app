@@ -12,11 +12,11 @@ export const typeDefs = gql`
   }
 
   type Nutrition {
-    calories: Int
-    protein: Int
-    fat: Int
-    netCarbs: Int
-    fiber: Int
+    calories: Float
+    protein: Float
+    fat: Float
+    netCarbs: Float
+    fiber: Float
     iron: Float
     zinc: Float
     selenium: Float
@@ -51,11 +51,11 @@ export const typeDefs = gql`
   }
 
   input NutritionInput {
-    calories: Int
-    protein: Int
-    fat: Int
-    netCarbs: Int
-    fiber: Int
+    calories: Float
+    protein: Float
+    fat: Float
+    netCarbs: Float
+    fiber: Float
     iron: Float
     zinc: Float
     selenium: Float
