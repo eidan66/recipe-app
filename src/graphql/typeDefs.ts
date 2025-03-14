@@ -69,7 +69,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getRecipes: [Recipe]
+    getRecipes: [Recipe]!
     getRecipe(uuid: String!): Recipe
   }
 

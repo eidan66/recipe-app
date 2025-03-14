@@ -1,11 +1,33 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import styled from 'styled-components';
+import { useQuery, gql } from '@apollo/client';
 
-import { recipes } from '../../data/recipes';
-import { Recipe } from '@/types/Recipe';
+const BackButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.onPrimary};
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+  }
+`;
 
 const Container = styled.div`
   max-width: 900px;
@@ -117,35 +139,54 @@ const CategoryItem = styled.h3`
   text-decoration: underline;
 `;
 
+const GET_RECIPE = gql`
+  query GetRecipe($id: String!) {
+    getRecipe(uuid: $id) {
+      uuid
+      title
+      description
+      image
+      prepTime
+      cookTime
+      servings
+      ingredients {
+        section
+        items
+      }
+      instructions {
+        section
+        steps
+      }
+      tips
+    }
+  }
+`;
+
 export default function RecipePage() {
   const { id } = useParams();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
+  const { data, loading, error } = useQuery(GET_RECIPE, {
+    variables: { id },
+    skip: !id,
+  });
+
   useEffect(() => {
-    if (!id) return;
-
-    const foundRecipe = recipes.find((r) => r.uuid === id);
-
-    if (foundRecipe) {
-      setRecipe(foundRecipe);
-
-      // אתחול של סימון המרכיבים ברשימה
-      const initialChecked = Object.values(foundRecipe.ingredients)
-        .flat()
-        .reduce((acc, item) => ({ ...acc, [item]: false }), {});
-
+    if (data && data.getRecipe) {
+      const initialChecked = data.getRecipe.ingredients
+        .flatMap((cat: { items: string[] }) => cat.items)
+        .reduce(
+          (acc: Record<string, boolean>, item: string) => ({ ...acc, [item]: false }),
+          {},
+        );
       setCheckedItems(initialChecked);
-    } else {
-      setRecipe(null);
     }
-
-    setLoading(false);
-  }, [id]);
+  }, [data]);
 
   if (loading) return <Container>⏳ טוען מתכון...</Container>;
-  if (!recipe) return <Container>❌ המתכון לא נמצא</Container>;
+  if (error) return <Container>❌ שגיאה בטעינת המתכון</Container>;
+  if (!data || !data.getRecipe) return <Container>❌ המתכון לא נמצא</Container>;
 
   const toggleAll = () => {
     const allChecked = Object.values(checkedItems).every((val) => val);
@@ -158,18 +199,19 @@ export default function RecipePage() {
 
   return (
     <Container>
-      <RecipeImage src={recipe.image} alt={recipe.title} />
-      <Title>{recipe.title}</Title>
-      <Description>{recipe.description}</Description>
+      <BackButton onClick={() => router.back()}>חזור</BackButton>
+      <RecipeImage src={data.getRecipe.image} alt={data.getRecipe.title} />
+      <Title>{data.getRecipe.title}</Title>
+      <Description>{data.getRecipe.description}</Description>
 
       <Details>
         <DetailItem>
-          ⏳ זמן הכנה: <strong>{recipe.prepTime} דקות</strong>
+          ⏳ זמן הכנה: <strong>{data.getRecipe.prepTime} דקות</strong>
         </DetailItem>
         <DetailItem>
-          🔥 זמן בישול: <strong>{recipe.cookTime} דקות</strong>
+          🔥 זמן בישול: <strong>{data.getRecipe.cookTime} דקות</strong>
         </DetailItem>
-        <DetailItem>🍽️ {recipe.servings} מנות</DetailItem>
+        <DetailItem>🍽️ {data.getRecipe.servings} מנות</DetailItem>
       </Details>
 
       <Section>
@@ -178,52 +220,54 @@ export default function RecipePage() {
           {Object.values(checkedItems).every((val) => val) ? 'בטל סימון הכל' : 'סמן הכל'}
         </ToggleButton>
         <List>
-          {/* @ts-expect-error - fix type later */}
-          {recipe.ingredients.map((category, index) => (
-            <div key={index}>
-              <CategoryItem>{category.section}</CategoryItem>
-              {category.items.map((ingredient: string, i: number) => (
-                <ListItem key={i}>
-                  <Checkbox
-                    type="checkbox"
-                    checked={checkedItems[ingredient] || false}
-                    onChange={() =>
-                      setCheckedItems((prev) => ({
-                        ...prev,
-                        [ingredient]: !prev[ingredient],
-                      }))
-                    }
-                  />
-                  {ingredient}
-                </ListItem>
-              ))}
-            </div>
-          ))}
+          {data.getRecipe.ingredients.map(
+            (category: { section: string; items: string[] }, index: number) => (
+              <div key={index}>
+                <CategoryItem>{category.section}</CategoryItem>
+                {category.items.map((ingredient: string, i: number) => (
+                  <ListItem key={i}>
+                    <Checkbox
+                      type="checkbox"
+                      checked={checkedItems[ingredient] || false}
+                      onChange={() =>
+                        setCheckedItems((prev) => ({
+                          ...prev,
+                          [ingredient]: !prev[ingredient],
+                        }))
+                      }
+                    />
+                    {ingredient}
+                  </ListItem>
+                ))}
+              </div>
+            ),
+          )}
         </List>
       </Section>
 
       <Section>
         <SectionTitle>👨‍🍳 הוראות הכנה:</SectionTitle>
         <List>
-          {/* @ts-expect-error - fix type later */}
-          {recipe.instructions.map((instruction, index) => (
-            <div key={index}>
-              <CategoryItem>{instruction.section}</CategoryItem>
-              {instruction.steps.map((step: string, i: number) => (
-                <ListItem key={i}>
-                  <Bullet>•</Bullet> {step}
-                </ListItem>
-              ))}
-            </div>
-          ))}
+          {data.getRecipe.instructions.map(
+            (instruction: { section: string; steps: string[] }, index: number) => (
+              <div key={index}>
+                <CategoryItem>{instruction.section}</CategoryItem>
+                {instruction.steps.map((step: string, i: number) => (
+                  <ListItem key={i}>
+                    <Bullet>•</Bullet> {step}
+                  </ListItem>
+                ))}
+              </div>
+            ),
+          )}
         </List>
       </Section>
 
-      {recipe.tips && (
+      {data.getRecipe.tips && (
         <Section>
           <SectionTitle>💡 טיפים:</SectionTitle>
           <List>
-            {recipe.tips.map((tip: string, index: number) => (
+            {data.getRecipe.tips.map((tip: string, index: number) => (
               <ListItem key={index}>
                 <Bullet>🔹</Bullet> {tip}
               </ListItem>
