@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import RecipeCard from './RecipeCard';
+import { Recipe } from '@/types/Recipe';
 
 const Grid = styled.div`
   display: flex;
@@ -10,17 +11,6 @@ const Grid = styled.div`
   justify-content: center;
   margin-top: 20px;
 `;
-
-interface Recipe {
-  uuid: string;
-  title: string;
-  description: string;
-  image: string;
-  prepTime: number;
-  cookTime: number;
-  servings: number;
-  tags: string[];
-}
 
 interface RecipeListProps {
   recipes: Recipe[];

@@ -149,6 +149,9 @@ const GET_RECIPE = gql`
       prepTime
       cookTime
       servings
+      tags
+      category
+      allergens
       ingredients {
         section
         items
@@ -158,6 +161,17 @@ const GET_RECIPE = gql`
         steps
       }
       tips
+      nutrition {
+        calories
+        protein
+        fat
+        netCarbs
+        fiber
+        iron
+        zinc
+        selenium
+        vitaminB12
+      }
     }
   }
 `;

@@ -15,7 +15,12 @@ export const typeDefs = gql`
     calories: Int
     protein: Int
     fat: Int
-    carbs: Int
+    netCarbs: Int
+    fiber: Int
+    iron: Float
+    zinc: Float
+    selenium: Float
+    vitaminB12: Float
   }
 
   type Recipe {
@@ -49,7 +54,12 @@ export const typeDefs = gql`
     calories: Int
     protein: Int
     fat: Int
-    carbs: Int
+    netCarbs: Int
+    fiber: Int
+    iron: Float
+    zinc: Float
+    selenium: Float
+    vitaminB12: Float
   }
 
   input RecipeInput {
