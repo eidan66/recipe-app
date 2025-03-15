@@ -168,6 +168,7 @@ const GET_RECIPE = gql`
         netCarbs
         fiber
         iron
+        sodium
         zinc
         selenium
         vitaminB12
@@ -282,6 +283,11 @@ export default function RecipePage() {
             {data.getRecipe.nutrition.selenium && (
               <ListItem>
                 <Bullet>🧂</Bullet> סלניום: {data.getRecipe.nutrition.selenium} מק&quot;ג
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.sodium && (
+              <ListItem>
+                <Bullet>🧂</Bullet> סודיום: {data.getRecipe.nutrition.sodium} מק&quot;ג
               </ListItem>
             )}
             {data.getRecipe.nutrition.vitaminB12 && (

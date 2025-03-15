@@ -20,6 +20,7 @@ export interface INutrition {
   iron?: number;
   zinc?: number;
   selenium?: number;
+  sodium?: number;
   vitaminB12?: number;
 }
 
@@ -63,6 +64,7 @@ const RecipeSchema = new Schema<IRecipe>({
     iron: { type: Number },
     zinc: { type: Number },
     selenium: { type: Number },
+    sodium: { type: Number },
     vitaminB12: { type: Number },
   },
 });

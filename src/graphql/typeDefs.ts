@@ -20,6 +20,7 @@ export const typeDefs = gql`
     iron: Float
     zinc: Float
     selenium: Float
+    sodium: Float
     vitaminB12: Float
   }
 
@@ -59,6 +60,7 @@ export const typeDefs = gql`
     iron: Float
     zinc: Float
     selenium: Float
+    sodium: Float
     vitaminB12: Float
   }
 

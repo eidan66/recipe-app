@@ -23,6 +23,7 @@ export interface Recipe {
     iron?: number;
     zinc?: number;
     selenium?: number;
+    sodium?: number;
     vitaminB12?: number;
   }; // ערכים תזונתיים אופציונליים
 }

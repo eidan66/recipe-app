@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 
-import Icon404 from '@/assets/svg/404.svg';
+// import Icon404 from '@/assets/svg/404.svg';
 
 // 🎨 עיצוב הכרטיסייה
 const Card = styled.div`
@@ -14,7 +14,8 @@ const Card = styled.div`
   padding: ${({ theme }) => theme.spacing.medium};
   text-align: center;
   width: 400px;
-  height: 670px;
+  height: 340px;
+  /* height: 670px; */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
 
@@ -23,12 +24,12 @@ const Card = styled.div`
   }
 `;
 
-const RecipeImage = styled.img`
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: ${({ theme }) => theme.borderRadius};
-`;
+// const RecipeImage = styled.img`
+//   width: 100%;
+//   height: 250px;
+//   object-fit: cover;
+//   border-radius: ${({ theme }) => theme.borderRadius};
+// `;
 
 const Title = styled.h3`
   font-size: 1.7rem;
@@ -103,7 +104,7 @@ export default function RecipeCard({
   uuid,
   title,
   description,
-  image,
+  // image,
   prepTime,
   cookTime,
   servings,
@@ -113,11 +114,11 @@ export default function RecipeCard({
 
   return (
     <Card theme={theme}>
-      {image && image.trim() !== '' ? (
+      {/* {image && image.trim() !== '' ? (
         <RecipeImage src={image} alt={title} />
       ) : (
         <Icon404 style={{ width: '100%', height: '250px' }} />
-      )}
+      )} */}
       <Title theme={theme}>{title}</Title>
       <Description theme={theme}>{description}</Description>
       <Info theme={theme}>

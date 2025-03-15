@@ -111,7 +111,10 @@ export default function RecipesPage() {
       );
     }
 
-    setFilteredRecipes(filtered);
+    const sortedFilteredRecipes = [...filtered].sort((a: Recipe, b: Recipe) =>
+      a.title.localeCompare(b.title),
+    );
+    setFilteredRecipes(sortedFilteredRecipes);
   }, [query, selectedTags, data]);
 
   if (loading) {
