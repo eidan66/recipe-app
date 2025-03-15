@@ -15,7 +15,12 @@ export interface INutrition {
   calories?: number;
   protein?: number;
   fat?: number;
-  carbs?: number;
+  netCarbs?: number;
+  fiber?: number;
+  iron?: number;
+  zinc?: number;
+  selenium?: number;
+  vitaminB12?: number;
 }
 
 export interface IRecipe extends Document {
@@ -53,7 +58,12 @@ const RecipeSchema = new Schema<IRecipe>({
     calories: { type: Number },
     protein: { type: Number },
     fat: { type: Number },
-    carbs: { type: Number },
+    netCarbs: { type: Number },
+    fiber: { type: Number },
+    iron: { type: Number },
+    zinc: { type: Number },
+    selenium: { type: Number },
+    vitaminB12: { type: Number },
   },
 });
 

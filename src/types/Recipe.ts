@@ -18,6 +18,11 @@ export interface Recipe {
     calories?: number;
     protein?: number;
     fat?: number;
-    carbs?: number;
+    netCarbs?: number;
+    fiber?: number;
+    iron?: number;
+    zinc?: number;
+    selenium?: number;
+    vitaminB12?: number;
   }; // ערכים תזונתיים אופציונליים
 }

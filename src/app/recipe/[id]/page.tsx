@@ -214,7 +214,9 @@ export default function RecipePage() {
   return (
     <Container>
       <BackButton onClick={() => router.back()}>חזור</BackButton>
-      <RecipeImage src={data.getRecipe.image} alt={data.getRecipe.title} />
+      {data.getRecipe.image && (
+        <RecipeImage src={data.getRecipe.image} alt={data.getRecipe.title} />
+      )}
       <Title>{data.getRecipe.title}</Title>
       <Description>{data.getRecipe.description}</Description>
 
@@ -226,7 +228,71 @@ export default function RecipePage() {
           🔥 זמן בישול: <strong>{data.getRecipe.cookTime} דקות</strong>
         </DetailItem>
         <DetailItem>🍽️ {data.getRecipe.servings} מנות</DetailItem>
+        {data.getRecipe.category && (
+          <DetailItem>
+            📂 קטגוריה: <strong>{data.getRecipe.category}</strong>
+          </DetailItem>
+        )}
+        {data.getRecipe.allergens && data.getRecipe.allergens.length > 0 && (
+          <DetailItem>
+            ⚠️ אלרגנים: <strong>{data.getRecipe.allergens.join(', ')}</strong>
+          </DetailItem>
+        )}
       </Details>
+
+      {data.getRecipe.nutrition && (
+        <Section>
+          <SectionTitle>🍽️ ערכים תזונתיים:</SectionTitle>
+          <List>
+            {data.getRecipe.nutrition.calories && (
+              <ListItem>
+                <Bullet>🔥</Bullet> קלוריות: {data.getRecipe.nutrition.calories} קק&quot;ל
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.protein && (
+              <ListItem>
+                <Bullet>💪</Bullet> חלבון: {data.getRecipe.nutrition.protein} גרם
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.fat && (
+              <ListItem>
+                <Bullet>🥑</Bullet> שומן: {data.getRecipe.nutrition.fat} גרם
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.netCarbs && (
+              <ListItem>
+                <Bullet>🥦</Bullet> פחמימות נטו: {data.getRecipe.nutrition.netCarbs} גרם
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.fiber && (
+              <ListItem>
+                <Bullet>🌾</Bullet> סיבים תזונתיים: {data.getRecipe.nutrition.fiber} גרם
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.iron && (
+              <ListItem>
+                <Bullet>🔩</Bullet> ברזל: {data.getRecipe.nutrition.iron} מ&quot;ג
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.zinc && (
+              <ListItem>
+                <Bullet>🧪</Bullet> אבץ: {data.getRecipe.nutrition.zinc} מ&quot;ג
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.selenium && (
+              <ListItem>
+                <Bullet>🧂</Bullet> סלניום: {data.getRecipe.nutrition.selenium} מק&quot;ג
+              </ListItem>
+            )}
+            {data.getRecipe.nutrition.vitaminB12 && (
+              <ListItem>
+                <Bullet>💊</Bullet> ויטמין B12: {data.getRecipe.nutrition.vitaminB12}
+                מק&quot;ג
+              </ListItem>
+            )}
+          </List>
+        </Section>
+      )}
 
       <Section>
         <SectionTitle>🛒 מרכיבים:</SectionTitle>
