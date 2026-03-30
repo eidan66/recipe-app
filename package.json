@@ -20,7 +20,7 @@
     "@tanstack/react-query": "^5.67.2",
     "graphql": "^16.10.0",
     "mongoose": "^8.12.1",
-    "next": "15.2.1",
+    "next": "15.2.8",
     "openai": "^4.86.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
